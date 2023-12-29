@@ -260,8 +260,8 @@ class LongSegment(SingleSegment):
 
     def update_flows(self):
         """ Updates self.flow attribute using vessel's middle segment value of flow. """
-        self.flow = np.array([self.flows[0][self.num_time_steps//2]]) #Set flow value for the object as middle segment value
-        #self.flow = np.array([self.flows[0][0]]) #first segment flow
+        #self.flow = np.array([self.flows[0][self.num_time_steps//2]]) #Set flow value for the object as middle segment value
+        self.flow = np.array([self.flows[0][0]]) #first segment flow
         self.flow_values = np.append(self.flow_values, self.flow) #Add object flow value to array flow values
         self.flow_matrix = np.vstack((self.flow_matrix, self.flows)) #save flow value for each segment at every time point
        
@@ -561,8 +561,8 @@ class DivergingBranchSegment(SingleSegment):
         self.flow_matrix_a = np.vstack((self.flow_matrix_a, self.flows_a)) #add segment flow values to matrix 
         self.flow_matrix_b = np.vstack((self.flow_matrix_b, self.flows_b)) 
         
-        self.flow = np.array([self.flows_a[self.num_time_steps//2], self.flows_b[self.num_time_steps//2]])
-        #self.flow = np.array([self.flows_a[0], self.flows_b[0]]) #first segment flow
+        #self.flow = np.array([self.flows_a[self.num_time_steps//2], self.flows_b[self.num_time_steps//2]])
+        self.flow = np.array([self.flows_a[0], self.flows_b[0]]) #first segment flow
 
     def calculate_pressures(self):
         self.flows_a = self.flows[0]
@@ -921,8 +921,8 @@ class ConvergingBranchSegment(SingleSegment):
         self.flow_matrix_a = np.vstack((self.flow_matrix_a, self.flows_a))
         self.flow_matrix_b = np.vstack((self.flow_matrix_b, self.flows_b)) 
         
-        self.flow = np.array([self.flows_a[self.num_time_steps//2], self.flows_b[self.num_time_steps//2]])
-        #self.flow = np.array([self.flows_a[0], self.flows_b[0]]) #first segment flow
+        #self.flow = np.array([self.flows_a[self.num_time_steps//2], self.flows_b[self.num_time_steps//2]])
+        self.flow = np.array([self.flows_a[0], self.flows_b[0]]) #first segment flow
 
 
     def calculate_pressures(self):
@@ -1044,56 +1044,56 @@ class ConvergingBranchSegment(SingleSegment):
         output_pressure = (((self.pressures_a[-2]*self.volumes_a[-1]) + (self.pressures_b[-2]*self.volumes_b[-1]))/(self.volumes_a[-1] + self.volumes_b[-1]))
         self.output_pressure = np.array([output_pressure, output_pressure])
    
-class SinkSegment(SingleSegment): 
-    """ Class for creating sink segment """
-    def __init__(self, input_pressure, output_pressure, diameter, length, viscosity, compliance = 1, num_time_steps = 1):
-        """ Initialise attributes of parent class """ 
-        super().__init__(input_pressure, output_pressure, diameter, length, viscosity, compliance, num_time_steps)
-    
-        self.volume = np.array([self.volume])
-        self.resistance = np.array([self.resistance])
-        self.input_pressure = np.array([self.input_pressure])
-        self.output_pressure = np.array([self.output_pressure])
-        self.diameter = np.array([self.diameter])
-        
-        self.flow_matrix = np.zeros([1, num_time_steps]) 
-        self.flows = np.zeros([1, self.num_time_steps])
-        
-        self.flow = np.array([0])
-        
-        self.number_of_vessels = 1
-
-    def calculate_a0(self):
-        A_0 = self.volume/(self.input_pressure - PIC)**(1/self.compliance)
-        self.a0 = A_0
-        
-    def change_pressure(self, new_pressure):
-        # if there is a change of pressure in the segment
-        if new_pressure != self.input_pressure:
-            self.input_pressure = np.array([new_pressure])
-            
-            updated_volume = self.a0 * ((self.input_pressure - PIC)**(1/self.compliance))
-            self.volume = np.array([updated_volume]) 
-
-            updated_diameter = np.sqrt(((4*self.volume)/(np.pi*self.length)))
-            self.diameter = updated_diameter  
-            
-#            updated_viscosity = estimated_viscosity(self.diameter) * 1e-3
-#            self.viscosity = updated_viscosity
-
-            updated_resistance = (8*self.viscosity*(self.length**3)*np.pi)/(self.volume**2)
-            updated_resistance = updated_resistance * (0.00750062) *  1e9
-            self.resistance = np.array([updated_resistance]) 
-            
-    def scale_pressures(self, remaining_resistance):
-        self.output_pressure = np.array([minimum_pressure])
-
-    def calculate_flow_branch(self):
-        pressure_gradient = self.input_pressure - self.output_pressure
-        sink_flow = pressure_gradient/self.resistance #* 1e-9
-#        self.sink_flow_matrix = np.vstack((self.sink_flow_matrix, sink_flow))
-        
-        self.flow = np.array([sink_flow])
+#class SinkSegment(SingleSegment): 
+#    """ Class for creating sink segment """
+#    def __init__(self, input_pressure, output_pressure, diameter, length, viscosity, compliance = 1, num_time_steps = 1):
+#        """ Initialise attributes of parent class """ 
+#        super().__init__(input_pressure, output_pressure, diameter, length, viscosity, compliance, num_time_steps)
+#    
+#        self.volume = np.array([self.volume])
+#        self.resistance = np.array([self.resistance])
+#        self.input_pressure = np.array([self.input_pressure])
+#        self.output_pressure = np.array([self.output_pressure])
+#        self.diameter = np.array([self.diameter])
+#        
+#        self.flow_matrix = np.zeros([1, num_time_steps]) 
+#        self.flows = np.zeros([1, self.num_time_steps])
+#        
+#        self.flow = np.array([0])
+#        
+#        self.number_of_vessels = 1
+#
+#    def calculate_a0(self):
+#        A_0 = self.volume/(self.input_pressure - PIC)**(1/self.compliance)
+#        self.a0 = A_0
+#        
+#    def change_pressure(self, new_pressure):
+#        # if there is a change of pressure in the segment
+#        if new_pressure != self.input_pressure:
+#            self.input_pressure = np.array([new_pressure])
+#            
+#            updated_volume = self.a0 * ((self.input_pressure - PIC)**(1/self.compliance))
+#            self.volume = np.array([updated_volume]) 
+#
+#            updated_diameter = np.sqrt(((4*self.volume)/(np.pi*self.length)))
+#            self.diameter = updated_diameter  
+#            
+##            updated_viscosity = estimated_viscosity(self.diameter) * 1e-3
+##            self.viscosity = updated_viscosity
+#
+#            updated_resistance = (8*self.viscosity*(self.length**3)*np.pi)/(self.volume**2)
+#            updated_resistance = updated_resistance * (0.00750062) *  1e9
+#            self.resistance = np.array([updated_resistance]) 
+#            
+#    def scale_pressures(self, remaining_resistance):
+#        self.output_pressure = np.array([minimum_pressure])
+#
+#    def calculate_flow_branch(self):
+#        pressure_gradient = self.input_pressure - self.output_pressure
+#        sink_flow = pressure_gradient/self.resistance #* 1e-9
+##        self.sink_flow_matrix = np.vstack((self.sink_flow_matrix, sink_flow))
+#        
+#        self.flow = np.array([sink_flow])
 
 # Treating last vessel in network as a sink
 #class SinkSegment(SingleSegment): 
