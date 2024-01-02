@@ -9,8 +9,7 @@ Develop a model to look at effects of compliance and pulsatility on blood flow i
 * vessels.py - contains all classes and methods used to create input network of vessels. 
 * model_ESV.py - creates storage matrices, functions to map between level and matrix positions, initial (t=0) values, runs main loop, saves output values as text files.
 * pressure_wave.txt - example of an input pressure wave.  
-* ESV_exec.py - Use with model_ESV_function.py for required input files. Change file paths for input file directory and compliances for chosen files. 
-* network text file e.g. input_network.txt - Holds information about number of vessels per level, branch pattern for levels, type of vessels, all baseline parameters. 
+* network text file e.g. input_network.txt - Holds information about number of vessels per level, branch pattern for levels, type of vessels, all baseline parameters. The example network (input_network.txt) holds values for the Plausible Vessel Network (developed in Chapter 5 of thesis). 
 
 *vessels.LongSegment(Input pressure, Output pressure, Diameter, Length, Blood Viscosity, Compliance (beta value), Number of Segments)* 
 
@@ -19,9 +18,10 @@ Develop a model to look at effects of compliance and pulsatility on blood flow i
 ## Other files:
 * network_input_replace.py - changes compliance values in generic text files.  
 * plausible_vessel_network_dev.py - used for calculating parameters for plausible vessel network. Input chosen diameter and blood velocity values for every level, output correct lengths for every level. Calculates parameters for three compartments (arteries, microvessels and veins). 
+* model_ESV_function.py - main model file as a function, use with ESV_exec.py to run multiple input files (e.g. multiple input networks or input pressure waves) more efficiently. Update input and output directories as required. 
+* ESV_exec.py - Use with model_ESV_function.py for required input files. Change file paths for input file directory and compliances for chosen files. 
 
-
-### model_ESV.py (iterating through time steps)
+### model_ESV.py (outline of model)
 1. Change pressure - New pressure in every vessel (determined by the pressure wave and how far it has travelled across the network), update volume and resistance values at every time point. If in level 0, use pressure wave as new pressure, if in every other level, new pressure comes from previous vessel at previous time point (output_pressure_matrix). 
 2. ESV calculation - Reduce network to Equivalent Single Vessel (ESV). Calculate total value of resistance for every segment, calculate pressure drop across every segment, calculate flow through every segment. Distribute flow in corresponding segments in main network. 
 3. Update object's flow attribute.
