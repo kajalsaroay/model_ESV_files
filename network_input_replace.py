@@ -13,7 +13,7 @@ import os
 # Change whole network compliance text files
 # Change path
 path = r'C:/Users/kajal/Documents/phd_year1/vessel_code/vessel_text_files/realistic_network/test/'
-string_code = 'mmm' #string to replace in file 
+string_code = 'ccc' #string to replace in file 
 
 #level = 'level_11'
 #string_code = 'v11'
