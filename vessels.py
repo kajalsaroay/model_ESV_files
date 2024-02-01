@@ -10,9 +10,9 @@ import numpy as np
 import numpy.matlib
 from scipy.interpolate import interp1d
 
-# Define pressures (mmHg)
-minimum_pressure = 11. 
-PIC = 7.
+# Define pressures (mmHg) 
+minimum_pressure = 11. #pressure at t=0
+PIC = 7. #intracranial pressure
 
 # Functions     
 def parallel_resistance(resistance_0, resistance_1):
@@ -21,9 +21,10 @@ def parallel_resistance(resistance_0, resistance_1):
     return total_resistance 
 
 
-# Viscosity diameter plot (interpolation)
+# Interpolation to estimate viscosity for a given diameter
+# Diameter and viscosity values taken from Boas et al (2008)
 initial_diameter = np.array([30.5, 24.4, 19.5, 15.6, 12.5, 10., 8, 12., 15., 18.7, 23.4, 29.3, 36.6])
-initial_viscosity = np.array([2.49, 2.34, 2.25, 2.20, 2.16, 2.12, 2.10, 2.15, 2.18, 2.22, 2.32, 2.51, 2.70]) #Convert to different units (x10**-3)
+initial_viscosity = np.array([2.49, 2.34, 2.25, 2.20, 2.16, 2.12, 2.10, 2.15, 2.18, 2.22, 2.32, 2.51, 2.70]) #Convert units (x10**-3)
 estimated_viscosity = interp1d(initial_diameter, initial_viscosity, fill_value="extrapolate") #in cP
 
 
