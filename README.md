@@ -2,7 +2,7 @@
 A Dynamic Computational Model of Pulsatile Brain Blood Flow 
 
 # Purpose 
-Develop a model to look at effects of compliance and pulsatility on blood flow in a network of cerebral blood vessels. 
+Develop a model to investigate the effects of compliance and pulsatility on blood flow in a network of cerebral blood vessels. 
 
 # How to Use 
 ## List of required files: 
@@ -26,3 +26,6 @@ Develop a model to look at effects of compliance and pulsatility on blood flow i
 2. ESV calculation - Reduce network to Equivalent Single Vessel (ESV). Calculate total value of resistance for every segment, calculate pressure drop across every segment, calculate flow through every segment. Distribute flow in corresponding segments in main network. 
 3. Update object's flow attribute.
 4. Calculate change in pressure across segments using flow and resistance values - Update output_pressure_matrix. 
+
+
+# Instructions 
